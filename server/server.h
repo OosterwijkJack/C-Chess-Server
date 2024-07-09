@@ -9,10 +9,10 @@
 #include <sys/types.h>
 #include <unistd.h> // read(), write(), close()
 
-#define MAX 80
 #define PORT 8008
 #define SA struct sockaddr
 
-char* client_communicate(int connfd);
 int create_server_socket(void);
+void write_message(int connfd, char* buff, int bsize);
+char * read_message(int connfd, char* buff, int bsize);
 void close_server_socket();

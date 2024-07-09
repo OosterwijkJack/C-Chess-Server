@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include "client.h"
 #include "server.h"
+#include "tools.h"
 #include <stdbool.h>
+
 
 #define HOST 0
 #define CLIENT 1
@@ -46,13 +48,40 @@ Create seperate functions for reading and writing so data can be retrieved as wa
 
 */
 void communicate(int sockfd){
+    char buff[MAX];
     if(serverType == HOST){
-       char* msg = client_communicate(sockfd); //comunicate with client
-       printf("Message from client: %s\n", msg);
+        memset(buff, 0 , MAX);
+        read_message(sockfd, buff,  sizeof(buff));
+        printf("Message from client: %s\n", buff);
 
+        memset(buff, 0, MAX);
+
+        printf("Message to client: ");
+
+        read_input(buff, MAX);
+
+        if(strcmp(buff, "exit") == 0){
+            close_server_socket();
+            exit(0);
+        }
+
+        write_message(sockfd, buff, sizeof(buff));
     }
     else{
-       char* msg = server_communicate(sockfd); // communicate with server
-       printf("Message from server: %s\n", msg);
+       memset(buff, 0, MAX);
+
+       printf("Message to server: ");
+       read_input(buff, MAX);
+
+        if(strcmp(buff, "exit") == 0){
+            close_client_socket(sockfd);
+            exit(0);
+        }
+
+       write_message(sockfd, buff, sizeof(buff));
+       memset(buff, 0 , MAX);
+       read_message(sockfd, buff, sizeof(buff));
+
+       printf("Message from server: %s\n", buff);
     }
 }

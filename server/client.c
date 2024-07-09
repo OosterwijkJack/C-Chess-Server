@@ -1,7 +1,5 @@
 #include <client.h>
 
-char hmessage[MAX];
-
 int create_client_socket()
 {
     int sockfd, connfd;
@@ -37,23 +35,6 @@ int create_client_socket()
     // close the socket
 }
 
-char * server_communicate(int sockfd) // talk to server
-{
-    char buff[MAX];
-    int n;
-    for(int i = 0; i < 1; i++){
-        memset(&buff, 0, MAX);
-        printf("Enter the string : ");
-        n = 0;
-        while ((buff[n++] = getchar()) != '\n')
-            ;
-        write(sockfd, buff, sizeof(buff));
-        memset(&buff, 0, MAX);
-        read(sockfd, buff, sizeof(buff));
-        strcpy(hmessage, buff);
-        return hmessage;
-    }
-}
 
 void close_client_socket(int sockfd){
     printf("Closing socket: %i\n",sockfd );

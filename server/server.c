@@ -1,7 +1,6 @@
 #include <server.h>
 
 int sockfd;
-char cmessage[MAX];
 
 int create_server_socket(void){
     int connfd, len;
@@ -42,6 +41,7 @@ int create_server_socket(void){
     
     len = sizeof(cli); // sizeof client buffer
     connfd = accept(sockfd, (SA*)&cli, &len);  // accept data sent from client. len is sent as pointer so it can be rewriten to the actual size of the data
+    
     if(connfd < 0){
         puts("Server accept faile...");
         exit(0);
@@ -53,30 +53,13 @@ int create_server_socket(void){
 
 }
 
-char* client_communicate(int connfd){ // talk to client
-    char buff[MAX];
-    memset(cmessage, 0, MAX);
 
-    int n;
+void write_message(int connfd, char* buff, int bsize){
+    write(connfd, buff, bsize);
+}
 
-    for(int i = 0; i < 1; i++){
-        memset(&buff, 0, MAX);
-
-        read(connfd, buff, sizeof(buff));
-        strcpy(cmessage, buff);
-
-        printf("To client: ");
-
-        memset(&buff, 0, MAX);
-        n=0;
-
-        while((buff[n++] = getchar()) != '\n') // write to buffer until newline char
-            ;
-        
-        write(connfd, buff, sizeof(buff)); // writing to connector file descriptor 
-
-        return cmessage;
-    }
+char * read_message(int connfd, char* buff, int bsize){
+    read(connfd, buff, bsize);
 }
 
 void close_server_socket(){

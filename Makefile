@@ -2,10 +2,10 @@
 CC = gcc
 
 # Compiler flags
-CFLAGS = -Iserver -g
+CFLAGS = -Iserver -Itools -g 
 
 # Source files
-SRCS = main.c server/client.c server/server.c
+SRCS = main.c server/client.c server/server.c tools/tools.c
 
 # Executable name
 EXEC = main
