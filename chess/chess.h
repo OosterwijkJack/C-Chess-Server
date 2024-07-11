@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "chess_art.h"
+#include <string.h>
 
 #define WHITE 0
 #define BLACK 1
@@ -17,6 +18,7 @@ typedef struct{
     int color;
     char ptype;
     int position;
+    char acsiiArt[8][17];
 }pieces;
 
 typedef struct{

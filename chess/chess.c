@@ -14,6 +14,7 @@ board * empty_board[64]; // for checking color of area a piece landed on
 void print_board();
 void setup_back_row(int i, int color);
 void init_database();
+void copy_str_array(char str[8][17], char tocopy[8][17]);
 
 int main(void){
     init_database();
@@ -64,12 +65,14 @@ void init_database(){
             board_data[i]->position = i;
             board_data[i]->ptype = PAWN;
             board_data[i]->color = BLACK;
+            copy_str_array(bPawn, board_data[i]->acsiiArt);
         }
         else if(i > 47 && i < 56){ // pawns bottom of board
             board_data[i] = malloc(sizeof(pieces));
             board_data[i]->position = i;
             board_data[i]->ptype = PAWN;
             board_data[i]->color = WHITE;
+            copy_str_array(wPawn,board_data[i]->acsiiArt);  
         }
     }
 }
@@ -77,6 +80,8 @@ void init_database(){
 void setup_back_row(int i, int color){
     
     char piece_table[] = {ROOK,HORSE,BISHOP,QUEEN,KING, BISHOP, HORSE,ROOK};
+    char ascii_table_white[8] = {&bRook, &bHorse, &bBishop, &bQueen, &bKing, &bBishop, &bHorse, &bRook};
+    char ascii_table_black[8] = {&wRook, &wHorse, &wBishop, &wQueen, &wKing, &wBishop, &wHorse, &wRook};
     int tmp = i;
     for(; i < tmp+8; i++){
         board_data[i] = malloc(sizeof(pieces));
@@ -84,9 +89,34 @@ void setup_back_row(int i, int color){
         board_data[i]->color = color;
         board_data[i]->position = i;
         board_data[i]->ptype = piece_table[i-tmp];
+
+        if(color == WHITE)
+            copy_str_array(ascii_table_white[i-tmp], board_data[i]->acsiiArt);
+        else
+            copy_str_array(ascii_table_black[i-tmp], board_data[i]->acsiiArt);
     }
 }
 
 void print_board(){
-    
+    int current_row = 0;
+    for(int i = 0; i < 64; i++){
+        
+        for(int j = 0; j < 8; j++){
+            if(board_data[(current_row*8)+j]->ptype){
+                printf("");
+            }
+        }
+        if((i+1)%8 == 0 && i != 0){
+            current_row += 1;
+        }
+    }
+}
+
+// put this into tools when done
+void copy_str_array(char str[8][17], char tocopy[8][17]){
+
+    for(int i = 0; i < 8; i ++){
+        strcpy(tocopy[i], str[i]);
+    }
+
 }
