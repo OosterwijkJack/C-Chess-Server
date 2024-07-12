@@ -18,7 +18,7 @@ typedef struct{
     int color;
     char ptype;
     int position;
-    char acsiiArt[8][17];
+    char acsiiArt[8][ART_LENGTH];
 }pieces;
 
 typedef struct{
