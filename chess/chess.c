@@ -15,7 +15,7 @@ void print_board();
 void setup_back_row(int i, int color);
 void init_database();
 void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]);
-void flush();
+void replace_blank_white(char toReplace[8][ART_LENGTH]);
 
 int main(void){
     init_database();
@@ -100,6 +100,11 @@ void print_board(){
        for(int j = 0; j < 8; j++){
             index = (current_row*8) + j;
             if(board_data[index]->ptype){
+                
+                if(empty_board[index]->color == WHITE){
+                    replace_blank_white(board_data[index]->acsiiArt);
+                }
+
                 printf(board_data[index]->acsiiArt[art_index]);
             }
             else{
@@ -119,7 +124,7 @@ void print_board(){
     }
 }
 
-// put this into tools when done
+// put all code below this comment in tools when chess.c is working
 void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]){
 
     for(int i = 0; i < 8; i ++){
@@ -127,7 +132,13 @@ void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]){
     }
 
 }
-void flush(){
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
+
+void replace_blank_white(char toReplace[8][ART_LENGTH]){
+    for(int i = 0 ; i < 8; i ++){
+        for(int j = 0 ; j < ART_LENGTH; j++){
+            if(toReplace[i][j] == ' '){
+                toReplace[i][j] = '0';
+            }
+        }
+    }
 }
