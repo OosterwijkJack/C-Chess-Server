@@ -7,15 +7,9 @@ with a 0 before printing
 
 */
 
-pieces * board_data[64]; // collect of 64 board structs
+pieces * board_data[64]; // collection of 64 board structs
 board * empty_board[64]; // for checking color of area a piece landed on
-
-
-void print_board();
-void setup_back_row(int i, int color);
-void init_database();
-void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]);
-void replace_blank_white(char toReplace[ART_LENGTH]);
+pieces * empty_piece;
 
 int main(void){
     init_database();
@@ -26,13 +20,20 @@ int main(void){
 void get_move(){ // get and validate user input
     
 }
-void make_move(char from[3], char* to[3]){ // take user input and make move
-
+void make_move(int from, int to){ // take user input and make move
+    // set new position and free old one
+    pieces * tmp = board_data[to];
+    board_data[to] = board_data[from];
+    free(tmp);
+    
+    board_data[from] = malloc(sizeof(pieces));
+    board_data[from]->position = from;
+    board_data[from]->ptype = (char)0;
 }
 
 
 void print_board(){
-    //system("clear");
+    system("clear");
     int current_row = 0;
     int art_index = 0;
     int index;
@@ -125,6 +126,7 @@ void init_database(){
         }
 
     }
+
 }
 
 void setup_back_row(int i, int color){

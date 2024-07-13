@@ -14,6 +14,13 @@
 #define QUEEN 'q'
 #define KING 'k'
 
+void print_board();
+void setup_back_row(int i, int color);
+void init_database();
+void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]);
+void replace_blank_white(char toReplace[ART_LENGTH]);
+void make_move(int from, int to);
+
 typedef struct{
     int color;
     char ptype;
