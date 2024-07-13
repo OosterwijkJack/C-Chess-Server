@@ -15,7 +15,7 @@ void print_board();
 void setup_back_row(int i, int color);
 void init_database();
 void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]);
-void replace_blank_white(char toReplace[8][ART_LENGTH]);
+void replace_blank_white(char toReplace[ART_LENGTH]);
 
 int main(void){
     init_database();
@@ -23,29 +23,34 @@ int main(void){
     
 }
 
-void get_move(){
+void get_move(){ // get and validate user input
     
 }
-void make_move(char from[3], char* to[3]){
+void make_move(char from[3], char* to[3]){ // take user input and make move
 
 }
+
+
 void print_board(){
-    system("clear");
+    //system("clear");
     int current_row = 0;
     int art_index = 0;
     int index;
     for(int i = 0; i < 64; i++){
+
         if((i+1) % 4 == 0 && art_index != 7)
             printf(" %i ", 8-current_row);
         else
             printf("   ");
+
         for(int j = 0; j < 8; j++){ // prints one whole row of ascii art (which is of size 8)
             index = (current_row*8) + j; 
             if(board_data[index]->ptype){ // if there is a piece in that area
                 
                 if(empty_board[index]->color == WHITE){
-                    replace_blank_white(board_data[index]->acsiiArt); // replaces blank space in art  with 0 to keep up board pattern
+                    replace_blank_white(board_data[index]->acsiiArt[art_index]); // replaces blank space in art  with 0 to keep up board pattern
                 }
+
                 printf(board_data[index]->acsiiArt[art_index]); // print ascii art (partially)
             }
             else{
@@ -150,12 +155,12 @@ void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]){
 
 }
 
-void replace_blank_white(char toReplace[8][ART_LENGTH]){
-    for(int i = 0 ; i < 8; i ++){
-        for(int j = 0 ; j < ART_LENGTH; j++){
-            if(toReplace[i][j] == ' '){
-                toReplace[i][j] = '0';
-            }
+void replace_blank_white(char toReplace[ART_LENGTH]){
+
+    for(int j = 0 ; j < strlen(toReplace); j++){
+        if(toReplace[j] == ' '){
+            toReplace[j] = '0';
         }
     }
 }
+

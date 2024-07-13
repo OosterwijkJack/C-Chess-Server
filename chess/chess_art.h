@@ -116,7 +116,7 @@ char wQueen[8][ART_LENGTH] = { "                ",
                     "  ████████████  ",};
 
 char bKing[8][ART_LENGTH]={
-                    "                "
+                    "                ",
                     "      ||||      ",
                     "    ||||||||    ",
                     "      ||||      ",
