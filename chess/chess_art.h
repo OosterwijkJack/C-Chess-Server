@@ -5,7 +5,7 @@ WHY DOES IT HAVE THE BE ART_LENGTH >:(
 
 */
 
-#define ART_LENGTH 40
+#define ART_LENGTH 50
 
 char blankBlackStr[8][ART_LENGTH] ={"                ",
                         "                ",
@@ -115,14 +115,15 @@ char wQueen[8][ART_LENGTH] = { "                ",
                     "    ████████    ",
                     "  ████████████  ",};
 
-char bKing[8][ART_LENGTH]={    "      ||||      ",
+char bKing[8][ART_LENGTH]={
+                    "                "
+                    "      ||||      ",
                     "    ||||||||    ",
                     "      ||||      ",
                     "  ||||||||||||  ",
                     "  ||||||||||||  ",
                     "    ||||||||    ",
-                    "  ||||||||||||  ",
-                    "                ",};
+                    "  ||||||||||||  ",};
 
 char wKing[8][ART_LENGTH] = {"                ",
                     "      ████      ",

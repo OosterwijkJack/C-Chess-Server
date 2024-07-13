@@ -15,11 +15,12 @@ void print_board();
 void setup_back_row(int i, int color);
 void init_database();
 void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]);
+void flush();
 
 int main(void){
     init_database();
-
     print_board();
+    
     
 }
 
@@ -74,8 +75,8 @@ void init_database(){
 void setup_back_row(int i, int color){
     
     char piece_table[] = {ROOK,HORSE,BISHOP,QUEEN,KING, BISHOP, HORSE,ROOK};
-    char (*ascii_table_white[8])[8][ART_LENGTH] = {&bRook, &bHorse, &bBishop, &bQueen, &bKing, &bBishop, &bHorse, &bRook}; // ummm is this w rizz???
-    char (*ascii_table_black[8])[8][ART_LENGTH] = {&wRook, &wHorse, &wBishop, &wQueen, &wKing, &wBishop, &wHorse, &wRook};
+    char (*ascii_table_black[8])[8][ART_LENGTH] = {&bRook, &bHorse, &bBishop, &bQueen, &bKing, &bBishop, &bHorse, &bRook}; // ummm is this w rizz???
+    char (*ascii_table_white[8])[8][ART_LENGTH] = {&wRook, &wHorse, &wBishop, &wQueen, &wKing, &wBishop, &wHorse, &wRook};
     int tmp = i;
     for(; i < tmp+8; i++){
         board_data[i] = malloc(sizeof(pieces));
@@ -83,7 +84,6 @@ void setup_back_row(int i, int color){
         board_data[i]->color = color;
         board_data[i]->position = i;
         board_data[i]->ptype = piece_table[i-tmp];
-
         if(color == WHITE)
             copy_str_array(*ascii_table_white[i-tmp], board_data[i]->acsiiArt);
         else
@@ -111,9 +111,10 @@ void print_board(){
             }
        }
        art_index++;
-       if((i+1)%8 == 0 && i!= 0){
+       printf("\n");
+       if((i+1)%8 == 0 && i != 0){
         current_row++;
-        printf("\n");
+        art_index = 0;
        }
     }
 }
@@ -125,4 +126,8 @@ void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]){
         strcpy(tocopy[i], str[i]);
     }
 
+}
+void flush(){
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }
