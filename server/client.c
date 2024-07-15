@@ -4,11 +4,6 @@ int create_client_socket()
 {
     int sockfd, connfd;
     struct sockaddr_in servaddr, cli;
-
-    char buff[14];
-    printf("Enter ip address of host: ");
-    scanf("%13s", buff);
-    
  
     // socket create and verification
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -19,7 +14,16 @@ int create_client_socket()
     else
         printf("Socket successfully created..\n");
     memset(&servaddr, 0, sizeof(servaddr));
- 
+    
+    // get host ip from text file
+    FILE * ptr;
+    char buff[14];
+    ptr = fopen("Host IP Addr.txt", "r");
+
+    fgets(buff, sizeof(buff), ptr);
+    buff[strlen(buff)] = '\0'; // remove new line
+
+
     // assign IP, PORT
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = inet_addr(buff);
