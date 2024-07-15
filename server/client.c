@@ -14,12 +14,7 @@ int create_client_socket()
     else
         printf("Socket successfully created..\n");
     memset(&servaddr, 0, sizeof(servaddr));
-    
-    char buff[14];
-    printf("Enter ip address of host: ");
-    scanf("%13s", buff);
-    puts(buff);
-
+ 
     // assign IP, PORT
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = inet_addr(buff);
