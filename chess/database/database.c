@@ -37,6 +37,7 @@ void init_database(){
             board_data[i]->position = i;
             board_data[i]->ptype = PAWN;
             board_data[i]->color = BLACK;
+            board_data[i]->moved = false;
             copy_str_array(bPawn, board_data[i]->acsiiArt);
         }
         else if(i > 47 && i < 56){ // pawns bottom of board
@@ -44,6 +45,7 @@ void init_database(){
             board_data[i]->position = i;
             board_data[i]->ptype = PAWN;
             board_data[i]->color = WHITE;
+            board_data[i]->moved = false;
             copy_str_array(wPawn,board_data[i]->acsiiArt);  
         }
 

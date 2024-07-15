@@ -18,20 +18,18 @@
 #define KING 'k'
 
 void print_board();
-void setup_back_row(int i, int color);
 void init_database();
-void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]);
-void replace_blank_white(char toReplace[ART_LENGTH]);
-void replace_white_blank(char toReplace[ART_LENGTH]);
 void make_move(int from, int to);
 void get_move();
-bool valid_user_input(char in[5]);
+bool is_move_valid(int from, int to);
+bool is_game_over();
 
 typedef struct{
     int color;
     char ptype;
     int position;
     char acsiiArt[8][ART_LENGTH];
+    bool moved; // only for pawns
 }pieces;
 
 typedef struct{

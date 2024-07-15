@@ -1,10 +1,10 @@
 CC = gcc
 
 # Compiler flags
-CFLAGS = -I. -I./database -I./moves -I./print -I./chess_art -g 
+CFLAGS = -I. -I./database -I./moves -I./print -I./chess_art -I./logic -g 
 
 # Source files
-SRCS = chess.c database/database.c moves/moves.c print/print.c chess_art/chess_art.c
+SRCS = chess.c database/database.c moves/moves.c print/print.c chess_art/chess_art.c logic/logic.c
 
 # Executable name
 EXEC = chess
