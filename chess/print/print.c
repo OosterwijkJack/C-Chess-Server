@@ -2,7 +2,7 @@
 
 
 void print_board(){
-    system("clear");
+    //system("clear");
     int current_row = 0;
     int art_index = 0;
     int index;

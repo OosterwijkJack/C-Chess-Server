@@ -16,6 +16,11 @@ int main(void){
     init_database();
     print_board();
 
+    raytrace_move(8, 'p');
+
+
+    /*
+
     int * tmp = malloc(sizeof(int)*2);
 
     while(true){
@@ -23,7 +28,7 @@ int main(void){
         make_move(tmp[0], tmp[1]);
         print_board();
     }
-    
+    */
 
 }
 

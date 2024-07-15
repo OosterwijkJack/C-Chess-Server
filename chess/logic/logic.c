@@ -1,8 +1,14 @@
 #include "logic.h"
 
 bool is_move_valid(int from, int to){
+
+    if(!(board_data[from]->ptype)){
+        puts("Not an existing piece");
+        return false;
+    }
+
     int * piece_moves = malloc(sizeof(int)*28); // 27 is most possible moves available to one piece at one time + space for -1
-    get_piece_p_moves(from, to, piece_moves);
+    //raytrace_move(from, to, piece_moves);
     bool valid = false;
     for(int i = 0 ; i < 64; i ++){
         
@@ -27,14 +33,53 @@ bool is_game_over(){
     return false;
 }
 
-// find what moves the piece can make disregarding other pieces being in the way
-void get_piece_p_moves(int from, char ptype, int * out){
+// find what moves the piece can make checking for pieces in the way
+void raytrace_move(int from, char ptype){
+    int * buff = malloc(sizeof(int)*28);
+    trace_up_down(from, buff);
 
+    for(int i = 0; i < 28;i++){
+        if(buff[i] == -1)
+            break;
+
+        printf("%i\n", buff[i]);
+    }
 }
 
-// returns valid moves a player can make taking into account other pieces in the path of a move
-int raytrace_move(int from, int to){
+void trace_up_down(int from, int * out){
+    int index = 0;
+    for(int i = from+8; i < 64; i += 8){ // starting at space one ahead going up
+        if(!check_space(i,&index, out)){
+            break;
+        }
+    }
+    for(int i = from-8; i < 64; i -= 8){ // starting at space one below going down
+        if(!check_space(i,&index, out)){
+            break;
+        }
+    }
+    out[index] = -1;
+}
 
+void trace_left_right(int from, int *out){
+    
+}
+
+bool check_space(int space, int *index, int * out){
+    if(space > 63 || space < 0){ // check in bounds
+        return false;
+    }
+
+    if(board_data[space]->ptype){ // met piece
+        out[*index] = space;
+        *index+=1;
+        return false;
+    }
+
+    out[*index] = space;
+    *index+=1;
+    return true;
+    
 }
 
 // king cant make a valid move and not in immediate danger
