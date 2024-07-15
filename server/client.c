@@ -14,16 +14,22 @@ int create_client_socket()
     else
         printf("Socket successfully created..\n");
     memset(&servaddr, 0, sizeof(servaddr));
- 
+    
+    char buff[14];
+    printf("Enter ip address of host: ");
+    scanf("%13s", buff);
+    puts(buff);
+
     // assign IP, PORT
     servaddr.sin_family = AF_INET;
-    servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    servaddr.sin_addr.s_addr = inet_addr(buff);
     servaddr.sin_port = htons(PORT);
  
     // connect the client socket to server socket
     if (connect(sockfd, (SA*)&servaddr, sizeof(servaddr))
         != 0) {
         puts("connection with the server failed...");
+        puts("Make sure you entered a valid ip address...");
         exit(0);
     }
     else
