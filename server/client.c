@@ -4,6 +4,11 @@ int create_client_socket()
 {
     int sockfd, connfd;
     struct sockaddr_in servaddr, cli;
+
+    char buff[14];
+    printf("Enter ip address of host: ");
+    scanf("%13s", buff);
+    
  
     // socket create and verification
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
