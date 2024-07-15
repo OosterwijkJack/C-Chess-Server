@@ -1,11 +1,4 @@
-
-/*
-
-WHY DOES IT HAVE THE BE ART_LENGTH >:(
-
-*/
-
-#define ART_LENGTH 50
+#include <chess_art.h>
 
 char blankBlackStr[8][ART_LENGTH] ={"                ",
                         "                ",

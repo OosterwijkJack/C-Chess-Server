@@ -61,6 +61,9 @@ void communicate(int sockfd){
         read_input(buff, MAX);
 
         if(strcmp(buff, "exit") == 0){
+            memset(buff, 0, MAX);
+            strcpy(buff, "*Host left*");
+            write_message(sockfd, buff, sizeof(buff));
             close_server_socket();
             exit(0);
         }
@@ -74,6 +77,9 @@ void communicate(int sockfd){
        read_input(buff, MAX);
 
         if(strcmp(buff, "exit") == 0){
+            memset(buff, 0, MAX);
+            strcpy(buff, "*Client left*");
+            write_message(sockfd, buff, sizeof(buff));
             close_client_socket(sockfd);
             exit(0);
         }

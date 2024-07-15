@@ -5,7 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/server",
-                "${workspaceFolder}/tools"
+                "${workspaceFolder}/tools",
+                "${workspaceFolder}/chess/database",
+                "${workspaceFolder}/chess/chess_art"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
