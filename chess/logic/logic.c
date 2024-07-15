@@ -8,7 +8,7 @@ bool is_move_valid(int from, int to){
     }
 
     int * piece_moves = malloc(sizeof(int)*28); // 27 is most possible moves available to one piece at one time + space for -1
-    //raytrace_move(from, to, piece_moves);
+    raytrace_move(from, to, piece_moves);
     bool valid = false;
     for(int i = 0 ; i < 64; i ++){
         
@@ -22,7 +22,7 @@ bool is_move_valid(int from, int to){
     }
     
     if (!valid){
-        puts("That piece cant move like that");
+        puts("Invalid move");
         return false;
     }
 }
@@ -34,35 +34,122 @@ bool is_game_over(){
 }
 
 // find what moves the piece can make checking for pieces in the way
-void raytrace_move(int from, char ptype){
-    int * buff = malloc(sizeof(int)*28);
-    trace_up_down(from, buff);
+void raytrace_move(int from, char ptype, int * out){
+    int index = 0;
+    trace_diagonals(from, out, &index);
 
     for(int i = 0; i < 28;i++){
-        if(buff[i] == -1)
+        if(out[i] == -1)
             break;
 
-        printf("%i\n", buff[i]);
+        printf("%i\n", out[i]);
     }
 }
 
-void trace_up_down(int from, int * out){
-    int index = 0;
+void trace_diagonals(int from, int * out, int * index){
+    bool first = true;
+    for(int i = from +9; i < 64; i+=9 ){
+
+        if((from+1) % 8 == 0){
+            if(first){
+                first = false;
+                continue;
+            }
+            else{
+                out[*index] = i;
+                *index+=1;
+                break;
+            }
+        }
+
+        if(!check_space(i, index, out))
+            break;
+        first = false;
+    }
+    first  = true;
+    for(int i = from -9; i > 0; i-=9 ){
+
+        if(from%8 == 0){
+            if(first)
+                continue;
+            else{
+                out[*index] = i;
+                *index+=1;
+                break;
+            }
+        }
+
+        if(!check_space(i, index, out))
+            break;
+        first = false;
+    }
+    first = true;
+     for(int i = from +7; i < 64; i+=7 ){
+
+        if(from%8 == 0){
+            if(first)
+                continue;
+            else{
+                out[*index] = i;
+                *index+=1;
+                break;
+            }
+        }
+
+        if(!check_space(i, index, out))
+            break;
+        first = false;
+    }
+    first = true;
+    for(int i = from -7; i > 0; i-=7 ){
+
+        if((from+1) % 8 == 0){
+            if(first)
+                continue;
+            else{
+                out[*index] = i;
+                *index+=1;
+                break;
+            }
+        }
+
+        if(!check_space(i, index, out))
+            break;
+        first = false;
+    }
+    out[*index] = -1;
+};
+
+void trace_up_down(int from, int * out, int * index){
     for(int i = from+8; i < 64; i += 8){ // starting at space one ahead going up
-        if(!check_space(i,&index, out)){
+        if(!check_space(i,index, out)){
             break;
         }
     }
     for(int i = from-8; i < 64; i -= 8){ // starting at space one below going down
-        if(!check_space(i,&index, out)){
+        if(!check_space(i,index, out)){
             break;
         }
     }
-    out[index] = -1;
+    out[*index] = -1;
 }
 
-void trace_left_right(int from, int *out){
-    
+void trace_left_right(int from, int *out, int * index){
+    for(int i = from+1; i < 8+ from; i++){
+        if(i > ((((int)from/8)+1)*8)-1 || i < ((int)from/8)*8){
+            break;
+        }
+        if(!check_space(i, index, out))
+            break;
+    }
+    for(int i = from-1; i < 8+from; i--){
+        if(i > ((((int)from/8)+1)*8)-1 || i < ((int)from/8)*8){
+            break;
+        }
+        if(!check_space(i, index, out))
+            break;
+    }
+    out[*index] = -1;
 }
 
 bool check_space(int space, int *index, int * out){

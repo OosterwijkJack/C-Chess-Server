@@ -14,9 +14,11 @@ board *empty_board[64];
 
 int main(void){
     init_database();
+    make_move(59, 47);
     print_board();
 
-    raytrace_move(8, 'p');
+    int * piece_moves = malloc(sizeof(int)*28);
+    raytrace_move(47, 'p', piece_moves);
 
 
     /*
