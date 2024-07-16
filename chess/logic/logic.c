@@ -36,13 +36,59 @@ bool is_game_over(){
 // find what moves the piece can make checking for pieces in the way
 void raytrace_move(int from, char ptype, int * out){
     int index = 0;
-    trace_diagonals(from, out, &index);
+    int * moves = malloc(sizeof(int)*33);
+
+
+    if(ptype == 'p'){
+        if(from >= 8){
+            moves[index] = from -8; // space ahead
+            index++;
+        }
+            
+        if(!board_data[from]->moved){
+            moves[index] = from - 16; // two spaces ahead
+            index++;
+        }
+
+        if(from >= 9){
+            if(!(from% 8 == 0) && board_data[from-9]->ptype){
+            moves[index] = from-9; // piece diag to pawn
+            index++;
+        }
+        if(from >= 7){
+            if(!((from+1)%8 == 0) && board_data[from-7]->ptype){
+                moves[index] = from-7; // piece diag to pawn
+                index++;
+            }
+        }
+        moves[index] = -1;
+    } 
+
+    else if(ptype == 'r'){
+        trace_left_right(from, out, &index);
+        trace_up_down(from, out, &index);
+    }
+    else if(ptype == 'h'){
+
+    }
+    else if(ptype = 'b'){
+        trace_diagonals(from, out, &index);
+    }
+    else if(ptype == 'q'){
+        trace_left_right(from, out, &index);
+        trace_up_down(from, out, &index);
+        trace_diagonals(from, out, &index);
+    }
+    else if (ptype == 'k'){
+
+    }
 
     for(int i = 0; i < 28;i++){
-        if(out[i] == -1)
+        if(moves[i] == -1)
             break;
 
-        printf("%i\n", out[i]);
+        printf("%i\n", moves[i]);
+        }
     }
 }
 
