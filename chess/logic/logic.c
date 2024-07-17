@@ -7,24 +7,23 @@ bool is_move_valid(int from, int to){
         return false;
     }
 
-    int * piece_moves = malloc(sizeof(int)*28); // 27 is most possible moves available to one piece at one time + space for -1
-    raytrace_move(from, to, piece_moves);
+    int * piece_moves = malloc(sizeof(int)*33); // 27 is most possible moves available to one piece at one time + space for -1
+    raytrace_move(from, piece_moves);
     bool valid = false;
     for(int i = 0 ; i < 64; i ++){
-        
+
         if(piece_moves[i] == -1) // acts as terminating character
             break;
 
         if(piece_moves[i] == to){ // that move can be made
-            valid = true;
-            break;
+            if(!(board_data[to]->ptype && board_data[from]->color == board_data[to]->color)){
+                valid = true;
+                break;
+            }
         }
     }
     
-    if (!valid){
-        puts("Invalid move");
-        return false;
-    }
+    return valid;
 }
 
 bool is_game_over(){
@@ -34,10 +33,9 @@ bool is_game_over(){
 }
 
 // find what moves the piece can make checking for pieces in the way
-void raytrace_move(int from, char ptype, int * out){
+void raytrace_move(int from, int * moves){
     int index = 0;
-    int * moves = malloc(sizeof(int)*33);
-
+    char ptype = board_data[from]->ptype;
 
     if(ptype == 'p'){
         if(from >= 8){
@@ -54,49 +52,125 @@ void raytrace_move(int from, char ptype, int * out){
             if(!(from% 8 == 0) && board_data[from-9]->ptype){
             moves[index] = from-9; // piece diag to pawn
             index++;
+            }
         }
+
         if(from >= 7){
-            if(!((from+1)%8 == 0) && board_data[from-7]->ptype){
+            if(!(from%8 == 7) && board_data[from-7]->ptype){
                 moves[index] = from-7; // piece diag to pawn
                 index++;
             }
         }
         moves[index] = -1;
+        return;
     } 
+    
 
+    // rook
     else if(ptype == 'r'){
-        trace_left_right(from, out, &index);
-        trace_up_down(from, out, &index);
+        trace_left_right(from, moves, &index);
+        trace_up_down(from, moves, &index);
     }
+    // horse
     else if(ptype == 'h'){
 
-    }
-    else if(ptype = 'b'){
-        trace_diagonals(from, out, &index);
-    }
-    else if(ptype == 'q'){
-        trace_left_right(from, out, &index);
-        trace_up_down(from, out, &index);
-        trace_diagonals(from, out, &index);
-    }
-    else if (ptype == 'k'){
-
-    }
-
-    for(int i = 0; i < 28;i++){
-        if(moves[i] == -1)
-            break;
-
-        printf("%i\n", moves[i]);
+        if(!(from%8==0) && from + 15 <= 63){ // down two left one cant be far left of board
+            moves[index] = from + 15;
+            index++;
         }
+
+        if(!(from%8 == 7) && from + 17 <=63){ // down two right one cant be far right of board
+            moves[index] = from + 17; 
+            index++;
+        }
+
+        if(!(from % 8) <= 5 && from + 10 <= 63){// right two down one
+            moves[index] = from + 10;
+            index++;
+        }
+
+        if((from % 8) >= 2 && from + 6 <= 63){ // left two down one
+            moves[index] = from + 6; // left two down one
+            index++;
+        }
+
+        if(!(from%8 == 7) && from-15 > 0){
+            moves[index] = from - 15;
+            index++;
+        }
+
+        if(!(from%8 == 0) && from-17 > 0){
+            moves[index] = from - 17;
+            index++;
+        }
+
+        if((from%8 >= 2) && from-10 > 0){
+            moves[index] = from - 10;
+            index++;
+        }
+
+        if(!(from%8 <=5) && from-6 > 0){
+            moves[index] = from - 6;
+            index++;
+        }
+        moves[index] = -1;
     }
-}
+    // bishop
+    else if(ptype == 'b'){
+        trace_diagonals(from, moves, &index);
+    }
+    // queen
+    else if(ptype == 'q'){
+        trace_left_right(from, moves, &index);
+        trace_up_down(from, moves, &index);
+        trace_diagonals(from, moves, &index);
+        moves[index] = -1;
+    }
+    // king
+    else if (ptype == 'k'){
+        if(!(from % 8 == 0)){ // left
+            moves[index] = from-1;
+            index++;
+        }
+        if(!(from%8 == 7) && from+1 <= 63){// right
+            moves[index] = from + 1;
+            index++;
+        }
+        if(from + 8 <= 63){ // up
+            moves[index] = from + 8;
+            index++;
+        }
+        if(from - 8 > 0){ // down
+            moves[index] = from - 8;
+            index++;
+        }
+        if(!(from % 8) == 7 && from + 9 <= 63){ // diag right up
+            moves[index] = from+9;
+            index++;
+        }
+        if(!(from % 8) == 0 && from - 9 > 0){ // diag right down
+            moves[index] = from-9;
+            index++;
+        }
+
+        if(!(from % 8) == 0 && from + 7 <= 63){ // diag left up
+            moves[index] = from+9;
+            index++;
+        }
+        if(!(from % 8) == 8 && from - 7 > 0){ // diag left down
+            moves[index] = from-7;
+            index++;
+        }
+        moves[index] = -1;
+    }
+    }
+
 
 void trace_diagonals(int from, int * out, int * index){
     bool first = true;
     for(int i = from +9; i < 64; i+=9 ){
 
-        if((from+1) % 8 == 0){
+        if(from % 8 == 7){
             if(first){
                 first = false;
                 continue;
@@ -149,7 +223,7 @@ void trace_diagonals(int from, int * out, int * index){
     first = true;
     for(int i = from -7; i > 0; i-=7 ){
 
-        if((from+1) % 8 == 0){
+        if(from % 8 == 7){
             if(first)
                 continue;
             else{

@@ -12,23 +12,27 @@ with a 0 before printing
 pieces *board_data[64];
 board *empty_board[64];
 
-int main(void){
+void chess_init(bool flip){
     init_database();
-    make_move(59, 47);
+
+    if(flip)
+        flip_board();
+        
     print_board();
 
-    int * piece_moves = malloc(sizeof(int)*28);
-    raytrace_move(47, 'p', piece_moves);
-
-
-    /*
-
+/*
     int * tmp = malloc(sizeof(int)*2);
 
     while(true){
         get_move(tmp);
-        make_move(tmp[0], tmp[1]);
-        print_board();
+        if(is_move_valid(tmp[0], tmp[1])){
+            make_move(tmp[0], tmp[1]);
+            board_data[tmp[1]]->moved = true;
+            print_board();
+        }
+        else{
+            puts("Invalid move");
+        }
     }
     */
 

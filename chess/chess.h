@@ -23,7 +23,8 @@ void make_move(int from, int to);
 void get_move();
 bool is_move_valid(int from, int to);
 bool is_game_over();
-void raytrace_move(int from, char ptype, int * out);
+void flip_board();
+void chess_init(bool flip);
 
 typedef struct{
     int color;

@@ -3,5 +3,5 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MAX 80
+#define MAX 5
 void read_input(char* buff, int size);

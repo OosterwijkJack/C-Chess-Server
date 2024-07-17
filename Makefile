@@ -2,10 +2,10 @@
 CC = gcc
 
 # Compiler flags
-CFLAGS = -Iserver -Itools -g 
+CFLAGS = -Iserver -Itools -g -Ichess -Ichess/chess_art -Ichess/database -Ichess/logic -Ichess/moves -Ichess/print 
 
 # Source files
-SRCS = main.c server/client.c server/server.c tools/tools.c
+SRCS = main.c server/client.c server/server.c tools/tools.c chess/chess.c chess/chess_art/chess_art.c chess/database/database.c chess/logic/logic.c chess/moves/moves.c chess/print/print.c
 
 # Executable name
 EXEC = main

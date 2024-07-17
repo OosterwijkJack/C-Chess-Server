@@ -79,3 +79,24 @@ void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]){
     }
 
 }
+
+void flip_board(){
+    pieces * tmp[64];
+    int index = 0;
+    for(int i = 63; i >= 0; i--){
+        tmp[index] = malloc(sizeof(pieces));
+        tmp[index]->color = board_data[i]->color;
+        tmp[index]->ptype = board_data[i]->ptype;
+        tmp[index]->position = board_data[i]->position;
+        copy_str_array(board_data[i]->acsiiArt,tmp[index]->acsiiArt);
+        
+        index++;
+    }
+    
+
+    for(int i = 0; i < 64; i++){
+        free(board_data[i]);
+        board_data[i] = tmp[i];
+    }
+
+}

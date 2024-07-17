@@ -10,3 +10,4 @@ void trace_up_down(int from, int * out, int * index);
 void trace_left_right(int from, int *out, int * index);
 void trace_diagonals(int from, int * out, int * index);
 bool check_space(int space, int *index, int * out);
+void raytrace_move(int from, int * moves);
