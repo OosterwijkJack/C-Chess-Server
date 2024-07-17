@@ -3,6 +3,7 @@
 #include "server.h"
 #include "tools.h"
 #include <stdbool.h>
+#include <signal.h>
 #include "chess.h"
 
 #define HOST 0
