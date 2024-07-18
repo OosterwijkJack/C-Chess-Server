@@ -21,7 +21,7 @@ void print_board();
 void init_database();
 void make_move(int from, int to);
 void get_move();
-bool is_move_valid(int from, int to);
+bool is_move_valid(int from, int to, bool color);
 bool is_game_over();
 void flip_board();
 void chess_init(bool flip);

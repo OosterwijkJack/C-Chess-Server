@@ -2,7 +2,7 @@
 
 void init_database(){
     // dependent of (i//8)  and j 
-    bool alt;
+    bool alt = false;
     setup_back_row(0, BLACK); // important pieces
     setup_back_row(56, WHITE);
 
@@ -30,23 +30,41 @@ void init_database(){
         if(i >= 16 && i < 48){
             // make memory space for empty slots pieces may land on
             board_data[i] = malloc(sizeof(pieces));
-            board_data[i]->position=i;
+            
+            if(board_data[i] != NULL){
+                board_data[i]->position=i;
+                board_data[i]->ptype = (char)0;
+            }
+            else
+                exit(1);
         }
         else if(i > 7 && i < 16){ // pawns at top of board
             board_data[i] = malloc(sizeof(pieces));
-            board_data[i]->position = i;
-            board_data[i]->ptype = PAWN;
-            board_data[i]->color = BLACK;
-            board_data[i]->moved = false;
-            copy_str_array(bPawn, board_data[i]->acsiiArt);
+
+            if(board_data[i] != NULL){
+                board_data[i]->position = i;
+                board_data[i]->ptype = PAWN;
+                board_data[i]->color = BLACK;
+                board_data[i]->moved = false;
+                copy_str_array(bPawn, board_data[i]->acsiiArt);
+            }
+            else
+                exit(1);
+           
         }
         else if(i > 47 && i < 56){ // pawns bottom of board
             board_data[i] = malloc(sizeof(pieces));
-            board_data[i]->position = i;
-            board_data[i]->ptype = PAWN;
-            board_data[i]->color = WHITE;
-            board_data[i]->moved = false;
-            copy_str_array(wPawn,board_data[i]->acsiiArt);  
+
+            if(board_data[i] != NULL){
+                board_data[i]->position = i;
+                board_data[i]->ptype = PAWN;
+                board_data[i]->color = WHITE;
+                board_data[i]->moved = false;
+                copy_str_array(wPawn,board_data[i]->acsiiArt);  
+            }
+            else
+                exit(1);
+
         }
 
     }
@@ -65,6 +83,7 @@ void setup_back_row(int i, int color){
         board_data[i]->color = color;
         board_data[i]->position = i;
         board_data[i]->ptype = piece_table[i-tmp];
+        board_data[i]->moved = false;
         if(color == WHITE)
             copy_str_array(*ascii_table_white[i-tmp], board_data[i]->acsiiArt);
         else

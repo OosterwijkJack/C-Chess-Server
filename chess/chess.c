@@ -20,12 +20,18 @@ void chess_init(bool flip){
         
     print_board();
 
+
+
+}
 /*
+int main(){
+    init_database();
+    print_board();
     int * tmp = malloc(sizeof(int)*2);
 
     while(true){
         get_move(tmp);
-        if(is_move_valid(tmp[0], tmp[1])){
+        if(is_move_valid(tmp[0], tmp[1], true)){
             make_move(tmp[0], tmp[1]);
             board_data[tmp[1]]->moved = true;
             print_board();
@@ -34,7 +40,7 @@ void chess_init(bool flip){
             puts("Invalid move");
         }
     }
-    */
-
+    
 }
 
+*/

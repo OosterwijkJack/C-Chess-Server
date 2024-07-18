@@ -22,7 +22,7 @@ int create_client_socket()
 
     fgets(buff, sizeof(buff), ptr);
     buff[strlen(buff)] = '\0'; // remove new line
-
+    fclose(ptr);
 
     // assign IP, PORT
     servaddr.sin_family = AF_INET;

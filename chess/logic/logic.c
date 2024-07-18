@@ -1,13 +1,13 @@
 #include "logic.h"
 
-bool is_move_valid(int from, int to){
+bool is_move_valid(int from, int to, bool color){
 
     if(!(board_data[from]->ptype)){
         puts("Not an existing piece");
         return false;
     }
 
-    int * piece_moves = malloc(sizeof(int)*33); // 27 is most possible moves available to one piece at one time + space for -1
+    int * piece_moves = malloc(sizeof(int)*33); 
     raytrace_move(from, piece_moves);
     bool valid = false;
     for(int i = 0 ; i < 64; i ++){
@@ -16,13 +16,14 @@ bool is_move_valid(int from, int to){
             break;
 
         if(piece_moves[i] == to){ // that move can be made
-            if(!(board_data[to]->ptype && board_data[from]->color == board_data[to]->color)){
+            if(!(board_data[to]->ptype && board_data[from]->color == board_data[to]->color && (color == board_data[from]->color))){
                 valid = true;
                 break;
             }
         }
     }
-    
+    // free data
+    free(piece_moves);
     return valid;
 }
 
@@ -39,24 +40,28 @@ void raytrace_move(int from, int * moves){
 
     if(ptype == 'p'){
         if(from >= 8){
-            moves[index] = from -8; // space ahead
-            index++;
+            if(!board_data[from-8]->ptype){
+                moves[index] = from -8; // space ahead
+                index++;
+            }
         }
             
-        if(!board_data[from]->moved){
-            moves[index] = from - 16; // two spaces ahead
-            index++;
+        if(!board_data[from]->moved && from >= 16){
+            if(!board_data[from-16]->ptype){
+                moves[index] = from - 16; // two spaces ahead
+                index++;
+            }
         }
 
         if(from >= 9){
-            if(!(from% 8 == 0) && board_data[from-9]->ptype){
+            if(!(from% 8 == 0) && !board_data[from-9]->ptype){
             moves[index] = from-9; // piece diag to pawn
             index++;
             }
         }
 
         if(from >= 7){
-            if(!(from%8 == 7) && board_data[from-7]->ptype){
+            if(!(from%8 == 7) && !board_data[from-7]->ptype){
                 moves[index] = from-7; // piece diag to pawn
                 index++;
             }
@@ -84,7 +89,7 @@ void raytrace_move(int from, int * moves){
             index++;
         }
 
-        if(!(from % 8) <= 5 && from + 10 <= 63){// right two down one
+        if(!(from % 8 >= 5) && from + 10 <= 63){// right two down one
             moves[index] = from + 10;
             index++;
         }
@@ -104,12 +109,12 @@ void raytrace_move(int from, int * moves){
             index++;
         }
 
-        if((from%8 >= 2) && from-10 > 0){
+        if(!(from%8 >= 5) && from-10 > 0){
             moves[index] = from - 10;
             index++;
         }
 
-        if(!(from%8 <=5) && from-6 > 0){
+        if((from%8 >= 2) && from-6 > 0){
             moves[index] = from - 6;
             index++;
         }

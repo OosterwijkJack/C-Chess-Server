@@ -58,10 +58,12 @@ void make_move(int from, int to){ // take user input and make move
     // set new position and free old one
     pieces * tmp = board_data[to];
     board_data[to] = board_data[from];
-    free(tmp);
     
     board_data[from] = malloc(sizeof(pieces));
     board_data[from]->position = from;
     board_data[from]->ptype = (char)0;
+
+    if(tmp != NULL)
+        free(tmp);
 }
 
