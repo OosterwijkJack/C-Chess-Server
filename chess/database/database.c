@@ -34,6 +34,7 @@ void init_database(){
             if(board_data[i] != NULL){
                 board_data[i]->position=i;
                 board_data[i]->ptype = (char)0;
+                board_data[i]->moved = false;
             }
             else
                 exit(1);

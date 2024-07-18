@@ -14,7 +14,7 @@ void communicate(int sockfd, int * tmp, char buff[MAX]);
 void receive_move(char buff[MAX], int * tmp, int sockfd);
 void send_move(char buff[MAX], int * tmp, int sockfd);
 void parse_message(int* msg, char * buff);
-void parse_response(char* resp, int* out);
+void parse_response(char* resp, int* out, int sockfd);
 void exit_call(int sockfd);
 
 int main(int argc, char* argv[]){
@@ -100,7 +100,7 @@ void receive_move(char buff[MAX], int * tmp, int sockfd){
     memset(tmp, 0, sizeof(int)*2);
 
     read_message(sockfd, buff, MAX);
-    parse_response(buff, tmp);
+    parse_response(buff, tmp, sockfd);
 
     printf("%i %i\n", 63-tmp[0], 63-tmp[1]);
 
@@ -111,7 +111,14 @@ void receive_move(char buff[MAX], int * tmp, int sockfd){
 void parse_message(int* msg, char * buff){
     sprintf(buff, "%i %i\0", msg[0], msg[1]);
 }
-void parse_response(char* resp, int* out){
+void parse_response(char* resp, int* out, int sockfd){
+    printf("%i\n", strlen(resp));
+
+    if (strlen(resp) < 4){ // when user enters ctrl + c to exit it sends an empty response back, which will cause seg fault if not dealt with
+        puts(serverType == HOST ? "Client disconnected": "Host disconnected");
+        exit_call(sockfd);
+    }
+
     char * token = strtok(resp, " ");
 
     out[0] = atoi(token);
