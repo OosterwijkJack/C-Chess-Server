@@ -65,5 +65,9 @@ void make_move(int from, int to){ // take user input and make move
 
     if(tmp != NULL)
         free(tmp);
+
+    if(board_data[to]->ptype == 'p' && to >= 56){
+        board_data[to]->ptype = 'q';
+    }
 }
 
