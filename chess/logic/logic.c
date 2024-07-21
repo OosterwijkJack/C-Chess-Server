@@ -109,7 +109,7 @@ void raytrace_move(int from, int * moves){
             index++;
         }
 
-        if(!(from%8 >= 5) && from-10 > 0){
+        if((from%8 >= 2) && from-10 > 0){
             moves[index] = from - 10;
             index++;
         }
