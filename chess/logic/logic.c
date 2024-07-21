@@ -54,14 +54,14 @@ void raytrace_move(int from, int * moves){
         }
 
         if(from >= 9){
-            if(!(from% 8 == 0) && !board_data[from-9]->ptype){
+            if(!(from% 8 == 0) && board_data[from-9]->ptype){
             moves[index] = from-9; // piece diag to pawn
             index++;
             }
         }
 
         if(from >= 7){
-            if(!(from%8 == 7) && !board_data[from-7]->ptype){
+            if(!(from%8 == 7) && board_data[from-7]->ptype){
                 moves[index] = from-7; // piece diag to pawn
                 index++;
             }
