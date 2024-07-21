@@ -79,7 +79,7 @@ void raytrace_move(int from, int * moves){
     // horse
     else if(ptype == 'h'){
 
-        if(!(from%8==0) && from + 15 <= 63){ // down two left one cant be far left of board
+        if(!((from)%8==0) && from + 15 <= 63){ // down two left one cant be far left of board
             moves[index] = from + 15;
             index++;
         }
@@ -114,7 +114,7 @@ void raytrace_move(int from, int * moves){
             index++;
         }
 
-        if((from%8 >= 2) && from-6 > 0){
+        if((from%8 <= 5) && from-6 > 0){
             moves[index] = from - 6;
             index++;
         }
