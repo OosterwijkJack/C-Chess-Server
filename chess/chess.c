@@ -23,7 +23,7 @@ void chess_init(bool flip){
 
 
 }
-/*
+
 int main(){
     init_database();
     print_board();
@@ -43,4 +43,4 @@ int main(){
     
 }
 
-*/
+

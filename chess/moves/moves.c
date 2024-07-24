@@ -66,8 +66,15 @@ void make_move(int from, int to){ // take user input and make move
     if(tmp != NULL)
         free(tmp);
 
-    if(board_data[to]->ptype == 'p' && to >= 56){
+    if(board_data[to]->ptype == 'p' && to <= 7){
         board_data[to]->ptype = 'q';
+
+        
+        if(board_data[to]->color == WHITE)
+            copy_str_array(wQueen, board_data[to]->acsiiArt);
+        else
+            copy_str_array(bQueen, board_data[to]->acsiiArt);
+
     }
 }
 

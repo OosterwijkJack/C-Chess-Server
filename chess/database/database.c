@@ -39,12 +39,13 @@ void init_database(){
             else
                 exit(1);
         }
+
         else if(i > 7 && i < 16){ // pawns at top of board
             board_data[i] = malloc(sizeof(pieces));
 
             if(board_data[i] != NULL){
                 board_data[i]->position = i;
-                board_data[i]->ptype = PAWN;
+                board_data[i]->ptype = (char)0;
                 board_data[i]->color = BLACK;
                 board_data[i]->moved = false;
                 copy_str_array(bPawn, board_data[i]->acsiiArt);
@@ -53,6 +54,7 @@ void init_database(){
                 exit(1);
            
         }
+        
         else if(i > 47 && i < 56){ // pawns bottom of board
             board_data[i] = malloc(sizeof(pieces));
 
@@ -83,7 +85,10 @@ void setup_back_row(int i, int color){
 
         board_data[i]->color = color;
         board_data[i]->position = i;
-        board_data[i]->ptype = piece_table[i-tmp];
+        if(color == BLACK)
+            board_data[i]->ptype = (char)0;
+        else
+            board_data[i]->ptype = piece_table[i-tmp];
         board_data[i]->moved = false;
         if(color == WHITE)
             copy_str_array(*ascii_table_white[i-tmp], board_data[i]->acsiiArt);

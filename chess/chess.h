@@ -25,6 +25,7 @@ bool is_move_valid(int from, int to, bool color);
 bool is_game_over();
 void flip_board();
 void chess_init(bool flip);
+void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]);
 
 typedef struct{
     int color;
