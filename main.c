@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <signal.h>
 #include "chess.h"
+#include "chess_art.h"
 
 #define HOST 1
 #define CLIENT 0
@@ -13,9 +14,10 @@ bool serverType = NULL;
 void communicate(int sockfd, int * tmp, char buff[MAX]);
 void receive_move(char buff[MAX], int * tmp, int sockfd);
 void send_move(char buff[MAX], int * tmp, int sockfd);
-void parse_message(int* msg, char * buff);
+void parse_message(int* msg, char * buff, int chgPiece);
 void parse_response(char* resp, int* out, int sockfd);
 void exit_call(int sockfd);
+void pawn_end_of_board(int pos, char newp);
 
 int main(int argc, char* argv[]){
     // argv checks for assigning server/client for communication
@@ -82,20 +84,38 @@ void send_move(char buff[MAX], int * tmp, int sockfd){
             puts("Invalid move...");
         }
     }
+
+    // from (tmp[0]) to (tmp[1])
     printf("%i %i\n", tmp[0], tmp[1]);
 
     make_move(tmp[0], tmp[1]);
 
+    // if pawn travelled entire board
+    int chgPiece = 0;
+    if(board_data[tmp[1]]->ptype == 'p' && tmp[1] <= 7){
+        char newp = (char)0; 
+        printf("\n    Rook (r)    Horse (h)  Bishop(b)    Queen (q)   \n");
+        printf("Enter new piece: ");
+
+        while(newp != 'r' && newp != 'h' && newp != 'b' && newp != 'q') // get input until valid
+            newp = getchar();
+
+        pawn_end_of_board(tmp[1], newp);
+        chgPiece = tmp[1];
+    }
+
+
     board_data[tmp[1]]->moved = true;
 
     print_board();
-    parse_message(tmp, buff);
+    parse_message(tmp, buff, chgPiece);
 
     puts(buff);
     write_message(sockfd, buff, MAX);
 
 }
 void receive_move(char buff[MAX], int * tmp, int sockfd){
+    // clear vars
     memset(buff, 0, MAX);
     memset(tmp, 0, sizeof(int)*2);
 
@@ -104,12 +124,20 @@ void receive_move(char buff[MAX], int * tmp, int sockfd){
 
     printf("%i %i\n", 63-tmp[0], 63-tmp[1]);
 
-    make_move(63-tmp[0], 63-tmp[1]);
+    make_move(63-tmp[0], 63-tmp[1]); // 63 - move to because board is mirrored
+
+    if(tmp[2] != 0)
+        pawn_end_of_board(63-tmp[1], (char)tmp[2]);
+
     print_board();
 }
 
-void parse_message(int* msg, char * buff){
-    sprintf(buff, "%i %i\0", msg[0], msg[1]);
+void parse_message(int* msg, char * buff, int chgPiece){
+    if(chgPiece == 0)
+        sprintf(buff, "%i %i\0", msg[0], msg[1]);
+    else{
+        sprintf(buff, "%i %i %i\0", msg[0], msg[1], chgPiece);
+    }
 }
 void parse_response(char* resp, int* out, int sockfd){
     printf("%i\n", strlen(resp));
@@ -123,7 +151,12 @@ void parse_response(char* resp, int* out, int sockfd){
 
     out[0] = atoi(token);
     out[1] = atoi(strtok(NULL, " ")); // continue tokenization
+    if(token != NULL)
+        out[2] = (int)strtok(NULL, " ")[0];
+    else
+        out[2] = 0;
 }
+
 void exit_call(int sockfd){
     if(serverType == HOST){
         close_server_socket();
@@ -134,4 +167,45 @@ void exit_call(int sockfd){
         puts("Client socket closed");
     }
     exit(0);
+}
+
+void pawn_end_of_board(int pos, char newp){
+    if(board_data[pos]->ptype == 'p' && pos <= 7){
+        // edit piece
+        if(newp == 'q'){
+            board_data[pos]->ptype = 'q';
+            if(board_data[pos]->color == WHITE)
+                copy_str_array(wQueen, board_data[pos]->acsiiArt);
+            else
+                copy_str_array(bQueen, board_data[pos]->acsiiArt);
+
+        }
+        else if(newp == 'b'){
+            board_data[pos]->ptype = 'b';
+            if(board_data[pos]->color == WHITE)
+                copy_str_array(wBishop, board_data[pos]->acsiiArt);
+            else
+                copy_str_array(bBishop, board_data[pos]->acsiiArt);
+
+        }
+        else if(newp == 'h'){
+            board_data[pos]->ptype = 'h';
+            if(board_data[pos]->color == WHITE)
+                copy_str_array(wHorse, board_data[pos]->acsiiArt);
+            else
+                copy_str_array(bHorse, board_data[pos]->acsiiArt);
+        }
+        else if (newp == 'r'){
+            board_data[pos]->ptype = 'r';
+            if(board_data[pos]->color == WHITE)
+                copy_str_array(wRook, board_data[pos]->acsiiArt);
+            else
+                copy_str_array(bRook, board_data[pos]->acsiiArt);
+
+        }
+        else{
+            exit(1);
+        }
+    }
+        
 }
