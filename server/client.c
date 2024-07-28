@@ -17,7 +17,7 @@ int create_client_socket()
     
     // get host ip from text file
     FILE * ptr;
-    char buff[14];
+    char buff[20];
     ptr = fopen("Host IP Addr.txt", "r");
 
     fgets(buff, sizeof(buff), ptr);
