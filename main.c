@@ -94,7 +94,7 @@ void send_move(char buff[MAX], int * tmp, int sockfd){
     int chgPiece = 0;
     if(board_data[tmp[1]]->ptype == 'p' && tmp[1] <= 7){
         char newp = (char)0; 
-        printf("\n    Rook (r)    Horse (h)  Bishop(b)    Queen (q)   \n");
+        printf("\n\t\tRook (r)\tHorse (h)\tBishop(b)\tQueen (q)\n");
         printf("Enter new piece: ");
 
         while(newp != 'r' && newp != 'h' && newp != 'b' && newp != 'q') // get input until valid
@@ -127,7 +127,7 @@ void receive_move(char buff[MAX], int * tmp, int sockfd){
     make_move(63-tmp[0], 63-tmp[1]); // 63 - move to because board is mirrored
 
     if(tmp[2] != 0)
-        pawn_end_of_board(63-tmp[1], (char)tmp[2]);
+        pawn_end_of_board(tmp[1], (char)tmp[2]);
 
     print_board();
 }
@@ -142,7 +142,7 @@ void parse_message(int* msg, char * buff, int chgPiece){
 void parse_response(char* resp, int* out, int sockfd){
     printf("%i\n", strlen(resp));
 
-    if (strlen(resp) < 4){ // when user enters ctrl + c to exit it sends an empty response back, which will cause seg fault if not dealt with
+    if (strlen(resp) == 0){ // when user enters ctrl + c to exit it sends an empty response back, which will cause seg fault if not dealt with
         puts(serverType == HOST ? "Client disconnected": "Host disconnected");
         exit_call(sockfd);
     }
