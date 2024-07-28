@@ -151,8 +151,10 @@ void parse_response(char* resp, int* out, int sockfd){
 
     out[0] = atoi(token);
     out[1] = atoi(strtok(NULL, " ")); // continue tokenization
+    
+    token = strtok(NULL, " ");
     if(token != NULL)
-        out[2] = (int)strtok(NULL, " ")[0];
+        out[2] = (int)token[0];
     else
         out[2] = 0;
 }
