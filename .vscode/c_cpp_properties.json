@@ -8,7 +8,8 @@
                 "${workspaceFolder}/tools",
                 "${workspaceFolder}/chess/database",
                 "${workspaceFolder}/chess/chess_art",
-                "${workspaceFolder}/chess"
+                "${workspaceFolder}/chess",
+                "${workspaceFolder}/chess/game_over"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

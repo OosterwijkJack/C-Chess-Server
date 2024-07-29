@@ -11,6 +11,7 @@ with a 0 before printing
 
 pieces *board_data[64];
 board *empty_board[64];
+int king_location;
 
 void chess_init(bool flip){
     init_database();

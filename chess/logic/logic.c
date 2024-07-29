@@ -16,11 +16,7 @@ bool is_move_valid(int from, int to, bool color){
             break;
             
         // check if move will put king in danger
-        if(move_kills_king(to, color)){
-            puts("Move will kill king");
-            valid = false;
-            break;
-        }
+        int *list = malloc(sizeof(int) * 32);
 
         if(piece_moves[i] == to){ // that move can be made
             if(!(board_data[to]->ptype && board_data[from]->color == board_data[to]->color && (color == board_data[from]->color))){
@@ -295,24 +291,40 @@ bool check_space(int space, int *index, int * out){
     
 }
 
-bool king_in_danger(){
+bool is_stale_mate(bool color){
+    bool take = false;
 
+    int * tmp = malloc(sizeof(int)*10);
+    raytrace_move(board_data[king_location], tmp);
+
+    if(!piece_can_be_taken(king_location, color)){
+        for(int i = 0; tmp[i] != -1; i++){
+            if(piece_can_be_taken(tmp[i], color))
+                take=true;
+        }
+        if(!take)
+            return true;
+    }
+    return false;
 }
-// returns true if the move the player is making will kill the king
-bool move_kills_king(int to, bool color){
+
+// returns true if the move the player is making will cause the king to be taken
+bool piece_can_be_taken(int to, bool color){
     int *tmp = malloc(sizeof(int)*33);
+
     for(int i = 0 ; i < 64; i ++){
 
-        if(board_data[i]->color == color || !board_data[i]->ptype) // dont check ownn pieces
+        if(board_data[i]->color == color) // dont check own pieces
             continue;
 
         raytrace_move(i, tmp);
         int index = 0 ;
 
-        while(tmp[index++] != -1){ // if other pieces have oppertunity to kill king return true
-            if(tmp[index] == to)
+        while(tmp[index++] != -1){ // if other pieces have oppertunity to take king return true
+        // keep track of who can take king to check if it can be taken later
+            if(tmp[index] == to){
                 return true;
-
+            }
         memset(tmp, 0, sizeof(tmp));
         }
     }

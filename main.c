@@ -6,6 +6,7 @@
 #include <signal.h>
 #include "chess.h"
 #include "chess_art.h"
+#include "game_over.h"
 
 #define HOST 1
 #define CLIENT 0
@@ -49,6 +50,11 @@ int main(int argc, char* argv[]){
 
     chess_init(serverType);
 
+    if(serverType == CLIENT)
+        king_location = 59;
+    else
+        king_location = 60;
+
     char buff[MAX];
     int * tmp = malloc(sizeof(int)*2);
     while(true){
@@ -75,6 +81,10 @@ void communicate(int sockfd, int * tmp, char buff[MAX]){
 void send_move(char buff[MAX], int * tmp, int sockfd){
     memset(buff, 0, MAX);
     memset(tmp, 0, sizeof(int)*2);
+
+    if(is_stale_mate(serverType)){
+
+    }
     // make move
     while(true){
         get_move(tmp);
