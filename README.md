@@ -7,7 +7,7 @@ Simple overview of use/purpose.
 An in-depth paragraph about your project and overview of use.
 
 ## How to use
-how
-to
-use
-project
+how<br />
+to< br / >
+use< br / >
+project< br / >
