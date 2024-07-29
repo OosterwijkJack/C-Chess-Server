@@ -8,6 +8,7 @@
         "string.h": "c",
         "ctype.h": "c",
         "tools.h": "c",
-        "chess.h": "c"
+        "chess.h": "c",
+        "logic.h": "c"
     }
 }

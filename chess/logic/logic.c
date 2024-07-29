@@ -14,6 +14,13 @@ bool is_move_valid(int from, int to, bool color){
 
         if(piece_moves[i] == -1) // acts as terminating character
             break;
+            
+        // check if move will put king in danger
+        if(move_kills_king(to, color)){
+            puts("Move will kill king");
+            valid = false;
+            break;
+        }
 
         if(piece_moves[i] == to){ // that move can be made
             if(!(board_data[to]->ptype && board_data[from]->color == board_data[to]->color && (color == board_data[from]->color))){
@@ -27,11 +34,6 @@ bool is_move_valid(int from, int to, bool color){
     return valid;
 }
 
-bool is_game_over(){
-    if(is_stale_mate() || is_check_mate())
-        return true;
-    return false;
-}
 
 // find what moves the piece can make checking for pieces in the way
 void raytrace_move(int from, int * moves){
@@ -41,7 +43,7 @@ void raytrace_move(int from, int * moves){
     if(ptype == 'p'){
         if(from >= 8){
             if(!board_data[from-8]->ptype){
-                moves[index] = from -8; // space ahead
+                moves[index] = from -8; // space ahead`
                 index++;
             }
         }
@@ -133,42 +135,41 @@ void raytrace_move(int from, int * moves){
     }
     // king
     else if (ptype == 'k'){
-        if(!(from % 8 == 0)){ // left
-            moves[index] = from-1;
+        if (from % 8 != 0) { // left
+            moves[index] = from - 1;
             index++;
         }
-        if(!(from%8 == 7) && from+1 <= 63){// right
+        if (from % 8 != 7 && from + 1 <= 63) { // right
             moves[index] = from + 1;
             index++;
         }
-        if(from + 8 <= 63){ // up
+        if (from + 8 <= 63) { // up
             moves[index] = from + 8;
             index++;
         }
-        if(from - 8 > 0){ // down
+        if (from - 8 >= 0) { // down
             moves[index] = from - 8;
             index++;
         }
-        if(!(from % 8) == 7 && from + 9 <= 63){ // diag right up
-            moves[index] = from+9;
+        if (from % 8 != 7 && from + 9 <= 63) { // diag right up
+            moves[index] = from + 9;
             index++;
         }
-        if(!(from % 8) == 0 && from - 9 > 0){ // diag right down
-            moves[index] = from-9;
+        if (from % 8 != 0 && from - 9 >= 0) { // diag left down
+            moves[index] = from - 9;
             index++;
         }
-
-        if(!(from % 8) == 0 && from + 7 <= 63){ // diag left up
-            moves[index] = from+9;
+        if (from % 8 != 0 && from + 7 <= 63) { // diag left up
+            moves[index] = from + 7;
             index++;
         }
-        if(!(from % 8) == 8 && from - 7 > 0){ // diag left down
-            moves[index] = from-7;
+        if (from % 8 != 7 && from - 7 >= 0) { // diag right down
+            moves[index] = from - 7;
             index++;
         }
         moves[index] = -1;
     }
-    }
+}
 
 
 void trace_diagonals(int from, int * out, int * index){
@@ -294,18 +295,27 @@ bool check_space(int space, int *index, int * out){
     
 }
 
-// king cant make a valid move and not in immediate danger
-bool is_stale_mate(){
+bool king_in_danger(){
 
 }
-
-// this will simply check if a king has died. I prefer being able to actually kill the King
-// instead of the game just telling me I win (and its easier)
-bool is_check_mate(){
-
-}
-
 // returns true if the move the player is making will kill the king
-bool move_kills_king(int to){
+bool move_kills_king(int to, bool color){
+    int *tmp = malloc(sizeof(int)*33);
+    for(int i = 0 ; i < 64; i ++){
 
+        if(board_data[i]->color == color || !board_data[i]->ptype) // dont check ownn pieces
+            continue;
+
+        raytrace_move(i, tmp);
+        int index = 0 ;
+
+        while(tmp[index++] != -1){ // if other pieces have oppertunity to kill king return true
+            if(tmp[index] == to)
+                return true;
+
+        memset(tmp, 0, sizeof(tmp));
+        }
+    }
+    free(tmp);
+    return false;
 }
