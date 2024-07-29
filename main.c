@@ -51,9 +51,9 @@ int main(int argc, char* argv[]){
     chess_init(serverType);
 
     if(serverType == CLIENT)
-        king_location = 59;
-    else
         king_location = 60;
+    else
+        king_location = 59;
 
     char buff[MAX];
     int * tmp = malloc(sizeof(int)*2);
@@ -79,12 +79,11 @@ void communicate(int sockfd, int * tmp, char buff[MAX]){
 }
 
 void send_move(char buff[MAX], int * tmp, int sockfd){
+    bool game_over = false;
     memset(buff, 0, MAX);
     memset(tmp, 0, sizeof(int)*2);
 
-    if(is_stale_mate(serverType)){
 
-    }
     // make move
     while(true){
         get_move(tmp);
@@ -98,7 +97,11 @@ void send_move(char buff[MAX], int * tmp, int sockfd){
     // from (tmp[0]) to (tmp[1])
     printf("%i %i\n", tmp[0], tmp[1]);
 
-    make_move(tmp[0], tmp[1]);
+    if(board_data[tmp[1]]->ptype == 'k')
+        game_over = true;
+    
+
+    make_move(tmp[0], tmp[1], serverType);
 
     // if pawn travelled entire board
     int chgPiece = 0;
@@ -123,6 +126,15 @@ void send_move(char buff[MAX], int * tmp, int sockfd){
     puts(buff);
     write_message(sockfd, buff, MAX);
 
+    if(game_over){
+        if(serverType == HOST){
+            checkmate_black_wins();
+        }
+        else{
+            checkmate_white_wins();
+        }
+    }
+
 }
 void receive_move(char buff[MAX], int * tmp, int sockfd){
     // clear vars
@@ -130,11 +142,19 @@ void receive_move(char buff[MAX], int * tmp, int sockfd){
     memset(tmp, 0, sizeof(int)*2);
 
     read_message(sockfd, buff, MAX);
-    parse_response(buff, tmp, sockfd);
+    parse_response(buff, tmp, sockfd); 
 
     printf("%i %i\n", 63-tmp[0], 63-tmp[1]);
 
-    make_move(63-tmp[0], 63-tmp[1]); // 63 - move to because board is mirrored
+    if(board_data[63-tmp[1]]->ptype == 'k'){
+        if(serverType == HOST){
+            checkmate_white_wins();
+        }
+        else{
+            checkmate_black_wins();
+        }
+    }
+    make_move(63-tmp[0], 63-tmp[1], !serverType); // 63 - move to because board is mirrored
 
     if(tmp[2] != 0)
         pawn_end_of_board(tmp[1], (char)tmp[2]);

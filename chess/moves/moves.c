@@ -54,8 +54,9 @@ bool valid_user_input(char in[5]){
     return true;
 
 }
-void make_move(int from, int to){ // take user input and make move
+void make_move(int from, int to, bool color){ // take user input and make move
     // set new position and free old one
+
     pieces * tmp = board_data[to];
     board_data[to] = board_data[from];
     

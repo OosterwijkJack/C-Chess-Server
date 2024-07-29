@@ -9,6 +9,9 @@
         "ctype.h": "c",
         "tools.h": "c",
         "chess.h": "c",
-        "logic.h": "c"
+        "logic.h": "c",
+        "unistd.h": "c",
+        "client.h": "c",
+        "game_over.h": "c"
     }
 }

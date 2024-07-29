@@ -19,10 +19,9 @@
 
 void print_board();
 void init_database();
-void make_move(int from, int to);
+void make_move(int from, int to, bool color);
 void get_move();
 bool is_move_valid(int from, int to, bool color);
-bool is_stale_mate(bool color);
 void flip_board();
 void chess_init(bool flip);
 void copy_str_array(char str[8][ART_LENGTH], char tocopy[8][ART_LENGTH]);
