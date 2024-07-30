@@ -14,3 +14,5 @@ This is my second project ever written in c. There are probably bugs and if you 
 -When a connection is made the board will popup and the client gets to make its move first<br />
 -moves are formatted as {letter}{number} and correspond to a piece on the board, e.g: (from: A2 to: A4)<br />
 -Use CTRL+C to leave game<br />
+
+![alt text](https://i.postimg.cc/h4xYHMDn/chess.png)
